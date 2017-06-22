@@ -3,12 +3,16 @@ package com.example.zhbj;
 import java.util.ArrayList;
 import java.util.List;
 
+import utils.PreUtils;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.Window;
@@ -16,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 
 public class GuideActivity extends Activity {
 
@@ -26,6 +31,7 @@ public class GuideActivity extends Activity {
 	private LinearLayout llContainer;
 	private ImageView ivPointRed;
 	private int mPointDis;
+	private Button btnStart;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,26 +40,32 @@ public class GuideActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_guide);
 		mViewPager = (ViewPager) findViewById(R.id.vp_guide);
-		Button btnStart = (Button) findViewById(R.id.btn_start);
+		btnStart = (Button) findViewById(R.id.btn_start);
 		ivPointRed = (ImageView) findViewById(R.id.iv_point_red);
 		llContainer = (LinearLayout) findViewById(R.id.ll_container);
 
 		initData();
 		GuideAdapter adapter = new GuideAdapter();
 		mViewPager.setAdapter(adapter);
-		mViewPager.addOnPageChangeListener(new OnPageChangeListener() {
+		mViewPager.setOnPageChangeListener(new OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
 				// TODO Auto-generated method stub
-
+				if (position == mImageViewList.size() - 1) {
+					btnStart.setVisibility(View.VISIBLE);
+				} else {
+					btnStart.setVisibility(View.INVISIBLE);
+				}
 			}
 
 			@Override
 			public void onPageScrolled(int position, float positionOffset,
 					int positionOffsetPixels) {
-				// TODO Auto-generated method stub
-
+				int leftMargin = (int) (mPointDis * positionOffset) + position * mPointDis;
+				RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) ivPointRed.getLayoutParams();
+				params.leftMargin = leftMargin;
+				ivPointRed.setLayoutParams(params);
 			}
 
 			@Override
@@ -62,7 +74,7 @@ public class GuideActivity extends Activity {
 
 			}
 		});
-
+        //获取视图树，对Layout进行监听，如果布局创建完成进行回调
 		ivPointRed.getViewTreeObserver().addOnGlobalLayoutListener(
 				new OnGlobalLayoutListener() {
 					
@@ -74,6 +86,16 @@ public class GuideActivity extends Activity {
 						System.out.println("间距"+mPointDis);
 					}
 				});
+		btnStart.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				PreUtils.setBoolean(getApplicationContext(), "is_first_enter", false);
+				Intent intent = new Intent(GuideActivity.this,MainActivity.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	private void initData() {
