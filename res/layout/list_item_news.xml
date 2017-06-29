@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/iv_news"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:background="#a000"
+        android:layout_marginRight="5dp"
+        android:padding="1dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/image_demo" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/iv_news"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:text="数个说个事公司公司感觉卡聚光科技好考了骄傲了改嫁了个阿卡噶看感觉" />
+    
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_news"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tv_title"
+        android:textSize="16sp"
+        android:textColor="#8000"
+        android:text="2017-06-28 14:50" />
+    
+    
+
+</RelativeLayout>

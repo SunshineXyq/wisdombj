@@ -46,7 +46,6 @@ public class NewsCenterPager extends BasePager {
 			processData(cache);
 		} 
 		getDataFromServer();
-		setCurrentDetailPager(0);
 	}
 
 	private void getDataFromServer() {
@@ -57,7 +56,7 @@ public class NewsCenterPager extends BasePager {
 					@Override
 					public void onSuccess(ResponseInfo<String> responseInfo) {
 						String result = responseInfo.result;
-						System.out.println(result);
+						System.out.println("解析前" + result);
 						processData(result);
 						CacheUtils.setCache(GlobalConstants.CATEGORY_URL, result, mActivity);
 					}
@@ -78,10 +77,11 @@ public class NewsCenterPager extends BasePager {
 		leftFragment.setMenuData(mNewsData.data);
 		
 		mMenuDetailPagers = new ArrayList<BaseMenuDetailPager>();
-		mMenuDetailPagers.add(new NewsMenuDetailPager(mActivity));
+		mMenuDetailPagers.add(new NewsMenuDetailPager(mActivity,mNewsData.data.get(0).children));
 		mMenuDetailPagers.add(new TopicMenuDetailPager(mActivity));
 		mMenuDetailPagers.add(new PhotosMenuDetailPager(mActivity));
 		mMenuDetailPagers.add(new InteractMenuDetailPager(mActivity));
+		setCurrentDetailPager(0);
 		
 	}
 	
@@ -89,6 +89,7 @@ public class NewsCenterPager extends BasePager {
 		BaseMenuDetailPager pager = mMenuDetailPagers.get(position);
 		flContent.removeAllViews();
 		flContent.addView(pager.mRootView);
+		pager.initData();
 		tvTitle.setText(mNewsData.data.get(position).title);
 	}
 }
